@@ -34,7 +34,7 @@ Limitações conhecidas:
 
 ## Visão do Harness
 
-![Arquitetura](architecture.png)
+![Arquitetura](diagrams/harness_whatsapp.jpg)
 
 ```text
 [Twilio/WhatsApp]

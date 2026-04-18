@@ -48,7 +48,7 @@ de cutover para número real, veja [Integração Twilio](docs/TWILIO.md) e
 
 ## Arquitetura
 
-![Arquitetura](docs/architecture.png)
+![Arquitetura](docs/diagrams/harness_whatsapp.jpg)
 
 Fluxo principal:
 
@@ -168,6 +168,7 @@ Para detalhes técnicos:
 - [Banco de Dados](docs/DATABASE.md)
 - [Integração Twilio](docs/TWILIO.md)
 - [Deploy](docs/DEPLOY.md)
+- [Diagramas](docs/diagrams/)
 
 
 
