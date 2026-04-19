@@ -13,6 +13,7 @@ import structlog
 
 from whatsapp_langchain.shared.config import settings
 from whatsapp_langchain.shared.db import (
+    bootstrap_langgraph_schema,
     close_pool,
     get_pool,
     open_checkpointer,
@@ -40,12 +41,11 @@ async def main() -> None:
 
     pool = await get_pool()
     await run_migrations(pool)
+    await bootstrap_langgraph_schema()
+
     checkpointer_stack, checkpointer = await open_checkpointer()
-    await checkpointer.setup()
 
     store_stack, store = await open_store()
-    if store:
-        await store.setup()
 
     outbound_mode = settings.resolved_twilio_outbound_mode
     if outbound_mode == "real":
