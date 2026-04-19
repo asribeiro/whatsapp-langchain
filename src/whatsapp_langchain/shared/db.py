@@ -13,6 +13,7 @@ Uso:
     await close_pool()
 """
 
+import asyncio
 from contextlib import AsyncExitStack
 from pathlib import Path
 
@@ -31,6 +32,8 @@ logger = structlog.get_logger()
 
 # Singleton do pool de conexões
 pool: AsyncConnectionPool | None = None
+MIGRATIONS_LOCK_ID = 8_642_000
+LANGGRAPH_BOOTSTRAP_LOCK_ID = 8_642_001
 
 
 def _resolve_migrations_dir() -> Path:
@@ -61,6 +64,23 @@ def _resolve_migrations_dir() -> Path:
 
 # Diretório de migrações
 MIGRATIONS_DIR = _resolve_migrations_dir()
+
+
+async def _acquire_advisory_lock(conn: AsyncConnection, lock_id: int) -> None:
+    """Adquire advisory lock sem deixar transação ociosa bloqueando DDL concorrente."""
+    while True:
+        cursor = await conn.execute("SELECT pg_try_advisory_lock(%s)", (lock_id,))
+        locked = (await cursor.fetchone())[0]
+        await conn.commit()
+        if locked:
+            return
+        await asyncio.sleep(0.1)
+
+
+async def _release_advisory_lock(conn: AsyncConnection, lock_id: int) -> None:
+    """Libera advisory lock e encerra a transação do comando."""
+    await conn.execute("SELECT pg_advisory_unlock(%s)", (lock_id,))
+    await conn.commit()
 
 
 async def get_pool() -> AsyncConnectionPool:
@@ -108,39 +128,43 @@ async def run_migrations(db_pool: AsyncConnectionPool) -> None:
     """
     async with db_pool.connection() as conn:
         conn: AsyncConnection
+        await _acquire_advisory_lock(conn, MIGRATIONS_LOCK_ID)
 
-        # Garante que a tabela de controle existe
-        await conn.execute("""
-            CREATE TABLE IF NOT EXISTS _migrations (
-                id          SERIAL PRIMARY KEY,
-                name        TEXT NOT NULL UNIQUE,
-                applied_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-            )
-        """)
-        await conn.commit()
-
-        # Busca migrações já aplicadas
-        cursor = await conn.execute("SELECT name FROM _migrations ORDER BY name")
-        rows = await cursor.fetchall()
-        applied = {row[0] for row in rows}
-
-        # Lê e aplica migrações pendentes
-        sql_files = sorted(MIGRATIONS_DIR.glob("*.sql"))
-
-        for sql_file in sql_files:
-            if sql_file.name in applied:
-                logger.debug("migration_already_applied", migration=sql_file.name)
-                continue
-
-            logger.info("migration_applying", migration=sql_file.name)
-            sql = sql_file.read_text(encoding="utf-8")
-            await conn.execute(sql.encode())
-            await conn.execute(
-                "INSERT INTO _migrations (name) VALUES (%s)",
-                (sql_file.name,),
-            )
+        try:
+            # Garante que a tabela de controle existe
+            await conn.execute("""
+                CREATE TABLE IF NOT EXISTS _migrations (
+                    id          SERIAL PRIMARY KEY,
+                    name        TEXT NOT NULL UNIQUE,
+                    applied_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                )
+            """)
             await conn.commit()
-            logger.info("migration_applied", migration=sql_file.name)
+
+            # Busca migrações já aplicadas
+            cursor = await conn.execute("SELECT name FROM _migrations ORDER BY name")
+            rows = await cursor.fetchall()
+            applied = {row[0] for row in rows}
+
+            # Lê e aplica migrações pendentes
+            sql_files = sorted(MIGRATIONS_DIR.glob("*.sql"))
+
+            for sql_file in sql_files:
+                if sql_file.name in applied:
+                    logger.debug("migration_already_applied", migration=sql_file.name)
+                    continue
+
+                logger.info("migration_applying", migration=sql_file.name)
+                sql = sql_file.read_text(encoding="utf-8")
+                await conn.execute(sql.encode())
+                await conn.execute(
+                    "INSERT INTO _migrations (name) VALUES (%s)",
+                    (sql_file.name,),
+                )
+                await conn.commit()
+                logger.info("migration_applied", migration=sql_file.name)
+        finally:
+            await _release_advisory_lock(conn, MIGRATIONS_LOCK_ID)
 
 
 def resolve_store_index_config() -> PostgresIndexConfig:
@@ -193,23 +217,31 @@ async def bootstrap_langgraph_schema() -> None:
 
     Isso evita criação lazy de schema durante o processamento da primeira
     mensagem e garante que o serviço só entra em estado ready após bootstrap.
+    Um advisory lock serializa esse bootstrap entre API e Worker em banco limpo.
     """
     logger.info(
         "langgraph_schema_bootstrap_starting",
         memory_enabled=settings.memory_enabled,
     )
+    db_pool = await get_pool()
 
-    checkpointer_stack, checkpointer = await open_checkpointer()
-    store_stack, store = await open_store()
+    async with db_pool.connection() as conn:
+        await _acquire_advisory_lock(conn, LANGGRAPH_BOOTSTRAP_LOCK_ID)
 
-    try:
-        await checkpointer.setup()
-        if store is not None:
-            await store.setup()
-    finally:
-        if store_stack is not None:
-            await store_stack.aclose()
-        await checkpointer_stack.aclose()
+        try:
+            checkpointer_stack, checkpointer = await open_checkpointer()
+            store_stack, store = await open_store()
+
+            try:
+                await checkpointer.setup()
+                if store is not None:
+                    await store.setup()
+            finally:
+                if store_stack is not None:
+                    await store_stack.aclose()
+                await checkpointer_stack.aclose()
+        finally:
+            await _release_advisory_lock(conn, LANGGRAPH_BOOTSTRAP_LOCK_ID)
 
     logger.info("langgraph_schema_bootstrap_done")
 
