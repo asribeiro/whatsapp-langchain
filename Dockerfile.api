@@ -16,8 +16,10 @@ COPY pyproject.toml uv.lock ./
 COPY src/ src/
 COPY db/ db/
 
-# Instala o pacote e dependências de runtime
-RUN uv pip install --system .
+# Instala dependências travadas no uv.lock e depois o pacote local sem re-resolver transitivos
+RUN uv export --frozen --no-dev --no-emit-project -o requirements.txt \
+    && uv pip install --system -r requirements.txt \
+    && uv pip install --system --no-deps .
 
 EXPOSE 8000
 

@@ -1,0 +1,26 @@
+# API FastAPI — servidor HTTP para webhooks e administração.
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# curl necessário para o healthcheck do Docker Compose
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
+# Instala uv para gerenciar dependências
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Copia apenas arquivos de dependência primeiro (cache de layers)
+COPY pyproject.toml uv.lock ./
+
+# Copia código fonte e migrações
+COPY src/ src/
+COPY db/ db/
+
+# Instala dependências travadas no uv.lock e depois o pacote local sem re-resolver transitivos
+RUN uv export --frozen --no-dev --no-emit-project -o requirements.txt \
+    && uv pip install --system -r requirements.txt \
+    && uv pip install --system --no-deps .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "whatsapp_langchain.server.main:app", "--host", "0.0.0.0", "--port", "8000"]
