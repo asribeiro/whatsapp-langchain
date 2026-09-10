@@ -1,64 +1,175 @@
-LICENÇA DA COMUNIDADE TOPHAWKS
+LICENÇA DA COMUNIDADE TOP HAWKS
 
-Copyright (c) 2025 TOPHAWKS. Todos os direitos reservados.
+Licenciante: Workwise Educacao e Tecnologia Ltda - ME, inscrita no CNPJ sob o
+nº 35.014.773/0001-01 (a “Licenciante”).
+
+Copyright (c) 2025 Workwise Educacao e Tecnologia Ltda - ME. Todos os direitos
+reservados.
 
 1. Uso permitido
 1.1. Este software e todos os ativos relacionados (o "Software") podem ser
-baixados, instalados, executados, copiados, modificados ou utilizados somente
-por indivíduos que sejam membros atuais e verificados da comunidade TOPHAWKS
-(https://www.rhawk.pro/comunidade) e que tenham obtido acesso por canais
-oficiais da TOPHAWKS.
-1.2. Os membros podem customizar, adaptar e usar o Software para criar e operar
+baixados, instalados, executados, copiados, modificados ou utilizados
+exclusivamente por pessoa física que seja membro atual e verificado da
+comunidade TOP HAWKS (https://www.rhawk.pro/comunidade) e que tenha obtido
+acesso por canais oficiais da Licenciante (o “Membro”).
+1.1.1. Esta Licença é concedida pessoalmente ao Membro e não se estende a
+sociedade, associação, empregador, cliente ou qualquer outra pessoa jurídica da
+qual o Membro seja sócio, administrador, empregado, contratado ou beneficiário.
+1.2. O Membro poderá customizar, adaptar e usar o Software para criar e operar
 suas próprias soluções, inclusive comerciais, e disponibilizá-las ao público em
-geral (usuários finais), desde que observadas as limitações desta Licença.
+geral como produto ou serviço de uso final, desde que observadas as limitações
+desta Licença (a “Solução Permitida”).
 1.3. Atribuição mínima: É obrigatório manter referências visíveis à
-TOPHAWKS/Ronnald Hawk e a esta Licença sempre que o Software ou derivados forem
+TOP HAWKS/Ronnald Hawk e a esta Licença sempre que o Software ou derivados forem
 distribuídos ou utilizados em produtos/serviços públicos ou comerciais.
 
 2. Uso proibido
 2.1. Não são concedidos quaisquer direitos a não membros sob esta Licença; tais
 pessoas não podem usar, copiar, distribuir ou hospedar o Software, total ou
 parcialmente.
-2.2. É terminantemente proibido comercializar o Software ou derivados como
-produto educacional, curso, treinamento, mentoria ou qualquer material
-instrucional que concorra ou imite as atividades da TOP HAWKS.
+2.1.1. Como única exceção ao item 2.1, o Membro poderá autorizar pessoa física
+diretamente empregada ou contratada por ele (a “Pessoa Autorizada”) a acessar,
+reproduzir, executar e modificar os Materiais Protegidos somente na medida
+necessária para desenvolver, implantar, operar, proteger ou manter, em nome e
+benefício do Membro, uma solução do próprio Membro. A Pessoa Autorizada não
+recebe licença própria, sublicença, direito de reutilização ou qualquer direito
+independente sobre o Software.
+2.1.2. Antes do acesso, a Pessoa Autorizada deverá assumir por escrito
+obrigações de confidencialidade, uso restrito, segurança, não reutilização e
+eliminação de cópias pelo menos tão protetivas quanto esta Licença. Essas
+obrigações deverão proibir expressamente a exploração de Oferta Educacional
+Proibida, a reprodução dos Materiais Protegidos em aulas, gravações ou capturas
+de tela, ressalvadas exclusivamente a orientação interna e o treinamento
+operacional permitidos nos itens 2.2.6 e 2.2.7, a manutenção de repositório
+próprio e a reutilização em outro projeto, cliente ou oferta, e continuarão
+válidas após o fim da relação com o Membro. O acesso deverá ser individual,
+mínimo e revogado assim que deixar de ser necessário.
+2.1.3. O Membro responde pelos atos e omissões da Pessoa Autorizada como se
+fossem seus. É proibido transferir o Software para repositório próprio da Pessoa
+Autorizada, de agência, empregador, cliente ou terceiro.
+2.2. Para os fins desta Licença, “Materiais Protegidos” compreendem, na extensão
+dos direitos detidos ou legitimamente exercidos pela Licenciante, o Software,
+código-fonte, código objeto, arquivos, módulos, scripts, prompts, configurações,
+testes, exemplos, dados fictícios, fluxos, automações, documentação, diagramas,
+apresentações, textos, roteiros, exercícios, soluções, tutoriais, gravações e
+materiais audiovisuais incluídos no repositório ou fornecidos com ele, bem como a
+seleção, organização e combinação original desses elementos, inclusive a
+arquitetura concretamente expressa em código, arquivos, diagramas ou
+documentação não pública, e modificações e trabalhos derivados que os reproduzam
+ou incorporem. Não integram os Materiais Protegidos, considerados isoladamente,
+ideias, princípios, métodos, conceitos, conhecimentos gerais, técnicas, padrões
+funcionais comuns ou componentes de terceiros sujeitos a licença própria.
+2.2.1. “Base Substancial” significa a totalidade dos Materiais Protegidos ou
+parte quantitativa ou qualitativamente relevante que permita reconstruir,
+ensinar, demonstrar, substituir ou reutilizar parte material do Software ou de
+sua estrutura concreta. Inclui, quando atender aos critérios de relevância
+previstos acima, fork, cópia, template, boilerplate, kit, exemplo, módulo,
+recorte, tradução, adaptação, reorganização, versão rebatizada ou versão
+modificada dos Materiais Protegidos.
+2.2.2. “Oferta Educacional Proibida” significa curso, treinamento, mentoria,
+consultoria educacional, workshop, bootcamp, comunidade, membership, programa de
+acompanhamento, aula, série de tutoriais, biblioteca de templates, material
+didático, repositório educacional ou oferta equivalente disponibilizada
+externamente a terceiros que incorpore, reproduza, adapte, exponha, demonstre,
+distribua ou seja materialmente estruturada a partir de uma Base Substancial.
+2.2.3. O Membro não poderá, direta ou indiretamente, por si, por Pessoa
+Autorizada ou por qualquer terceiro, usar uma Base Substancial para criar,
+estruturar, produzir, gravar, promover, vender, licenciar, ministrar ou
+disponibilizar Oferta Educacional Proibida. A proibição independe de a oferta ser
+paga ou gratuita e também se aplica a demonstrações, bônus, amostras, lead
+magnets ou etapas de funil comercial, independentemente do meio, nome, marca,
+identidade visual, idioma, tradução, alteração, anonimização, rebranding,
+reordenação, fragmentação, recorte ou combinação com outros materiais.
+2.2.4. Ressalvados os itens 2.2.6 a 2.2.8, é igualmente proibido, no contexto de
+Oferta Educacional Proibida ou em comunicação externa dirigida a terceiro não
+autorizado, exibir ou reproduzir trechos não incidentais dos Materiais
+Protegidos em aulas, lives, vídeos, gravações, screenshots, slides, artigos,
+posts ou demonstrações; publicar ou fornecer a terceiro não autorizado versões
+modificadas, anonimizadas ou rebatizadas; fragmentar o material para contornar
+esta restrição; ou permitir, auxiliar, induzir ou contratar terceiro para
+praticar esses atos.
+2.2.5. Esta restrição não impede o Membro de ensinar, pesquisar, escrever,
+prestar mentoria ou produzir material próprio sobre os mesmos temas,
+tecnologias, ferramentas, conceitos ou problemas, desde que o conteúdo, código,
+exemplos, exercícios e materiais sejam desenvolvidos independentemente, sem
+reproduzir, adaptar, expor ou distribuir Base Substancial, revelar informação
+confidencial, conceder acesso direto ou indireto aos Materiais Protegidos ou
+utilizar sinais distintivos da Licenciante de modo a sugerir origem, aprovação,
+parceria ou afiliação. A identidade de tema, tecnologia, finalidade ou público
+não caracteriza, isoladamente, violação desta seção.
+2.2.6. Não constitui Oferta Educacional Proibida a orientação interna e privada
+dada pelo Membro às suas Pessoas Autorizadas somente na medida necessária para
+que atuem na Solução Permitida. Gravações, notas e cópias deverão permanecer
+privadas, não poderão ser
+reutilizadas em outro projeto, cliente ou oferta e deverão ser eliminadas quando
+deixarem de ser necessárias.
+2.2.7. Também não constitui Oferta Educacional Proibida o treinamento
+operacional prestado pelo Membro ou por Pessoa Autorizada a cliente ou usuário
+final da Solução Permitida, exclusivamente para ensinar o uso de suas
+funcionalidades, desde que não conceda acesso ao repositório, código-fonte,
+prompts, configurações, arquitetura interna, documentação de desenvolvimento,
+exercícios ou outros Materiais Protegidos; não ensine a reconstruir, adaptar,
+desenvolver ou reutilizar o Software; utilize apenas manuais próprios e, quando
+necessários, imagens ou gravações da interface de usuário da Solução Permitida;
+e não seja anunciado ou comercializado como acesso, formação ou capacitação
+sobre o Software, o repositório ou a metodologia interna da Licenciante. O
+treinamento poderá integrar a implantação, o suporte ou a operação da Solução
+Permitida, mas não poderá constituir oferta educacional autônoma.
+2.2.8. Nada nesta Licença pretende excluir utilizações que não possam ser
+contratualmente afastadas pela legislação aplicável. Eventual citação deverá
+limitar-se ao trecho estritamente necessário à finalidade legalmente admitida,
+identificar o Software e seu titular, não substituir o acesso legítimo aos
+Materiais Protegidos e não prejudicar injustificadamente sua exploração normal.
 2.3. É proibido apresentar o Software ou derivados como criação original do
-membro sem a devida atribuição à TOPHAWKS/Ronnald Hawk.
+membro sem a devida atribuição à TOP HAWKS/Ronnald Hawk.
 2.4. É vedado remover ou alterar avisos de direitos autorais ou os termos desta
 Licença incluídos no Software.
-2.5. O código e ativos devem permanecer em repositórios privados. É proibido
-tornar público ou de acesso irrestrito o repositório contendo o Software ou
-derivados.
-2.5.1. A concessão de acesso a terceiros prestadores de serviço (ex:
-desenvolvedores contratados ou agências) é permitida exclusivamente para fins
-de suporte técnico à solução do membro, sob total responsabilidade deste quanto
-à manutenção do sigilo e proteção da propriedade intelectual da TOPHAWKS.
+2.5. É proibido tornar público ou de acesso irrestrito o repositório contendo o
+Software ou derivados. O repositório deverá permanecer privado, sob controle do
+Membro, com acesso restrito ao próprio Membro e às Pessoas Autorizadas nos
+limites dos itens 2.1.1 a 2.1.3.
 2.6. Proteção contra treinamento de IA: É expressamente proibido o uso de
 qualquer parte do Software, código-fonte ou ativos da comunidade para alimentar
 bases de dados ou treinar modelos de inteligência artificial (LLMs) que visem a
 criação de ferramentas, serviços ou produtos concorrentes à TOP HAWKS.
-2.7. Violações resultam em rescisão imediata desta Licença, obrigação de cessar
-o uso e remover o Software/derivados de circulação, sujeitando o infrator a
-medidas legais, incluindo indenização por perdas e danos e tutela inibitória.
+2.7. A utilização externa de Base Substancial em Oferta Educacional Proibida
+constitui violação material desta Licença. Violações resultam em rescisão
+imediata, obrigação de cessar a oferta ou o uso, remover o conteúdo de
+circulação, revogar acessos, solicitar sua remoção perante plataformas e
+destinatários e eliminar cópias não autorizadas sob o controle do Membro ou de
+suas Pessoas Autorizadas, sem prejuízo de indenização por perdas e danos, tutela
+inibitória e demais medidas previstas em lei. As obrigações desta seção
+permanecem aplicáveis após o encerramento da membership enquanto o Membro,
+ex-membro ou suas Pessoas Autorizadas mantiverem cópias, derivações ou
+informações confidenciais obtidas sob esta Licença.
 
 3. Contribuições
-3.1. Ao enviar feedback ou contribuições, o contribuinte concede à TOP HAWKS
+3.1. Ao enviar feedback ou contribuições, o contribuinte concede à Licenciante
 uma licença perpétua, mundial e livre de royalties para usar, reproduzir,
 modificar e distribuir tais contribuições como parte integrante do Software.
 3.2. Os contribuintes declaram que possuem os direitos necessários para conceder
 a licença prevista nesta seção.
 
-4. Rescisão e Direitos de ex-membros
-4.1. Esta Licença é automaticamente rescindida se o membro deixar de pertencer
-à comunidade TOP HAWKS ou violar qualquer cláusula destes termos.
-4.1.1. Legado de soluções: Em caso de saída da comunidade (cancelamento de
-assinatura), o indivíduo perde o direito de receber atualizações do Software e
-de criar novos projetos baseados nele. Resguarda-se, contudo, o direito de
-manter em operação soluções comerciais que já estejam publicadas e em uso
-efetivo por usuários finais na data da rescisão, desde que continue observando
-as regras de Atribuição (1.3) e não-concorrência (2.2).
-4.2. A TOP HAWKS pode revogar o acesso ao Software a qualquer momento, com ou
-sem justificativa, mediante aviso prévio razoável quando aplicável.
+4. Encerramento da membership e Rescisão
+4.1. Encerramento regular da membership. Quando o membro deixar de pertencer à
+comunidade TOP HAWKS sem ter violado esta Licença, perderá o direito de iniciar
+novos projetos com o Software e de receber novas versões, atualizações ou
+materiais.
+4.2. Soluções existentes. O ex-membro poderá manter em operação soluções que já
+estavam publicadas e em uso efetivo por usuários finais antes do encerramento da
+membership, bem como realizar a manutenção estritamente necessária à
+continuidade dessas soluções. Permanecem aplicáveis todas as restrições desta
+Licença, inclusive as relativas a atribuição, privacidade do código, revenda,
+transferência e Oferta Educacional Proibida.
+4.2.1. Para os fins exclusivos da licença residual prevista no item 4.2, o
+ex-membro continuará sendo tratado como Membro e poderá manter Pessoas
+Autorizadas somente para a manutenção expressamente permitida naquele item.
+4.3. Violação. A violação de qualquer cláusula rescinde imediatamente esta
+Licença. Nesse caso, o membro deverá cessar o uso do Software e destruir todas
+as cópias sob seu controle, sem o benefício previsto no item 4.2.
+4.4. A Licenciante poderá revogar o acesso aos repositórios, novas versões,
+atualizações e materiais quando a membership for encerrada ou esta Licença for
+violada.
 
 5. Isenção de garantia
 O SOFTWARE É FORNECIDO "NO ESTADO EM QUE SE ENCONTRA" (AS-IS), SEM QUALQUER
@@ -67,10 +178,10 @@ COMERCIALIZAÇÃO, ADEQUAÇÃO A UM PROPÓSITO ESPECÍFICO E NÃO VIOLAÇÃO. O 
 ASSUME TODO O RISCO QUANTO À QUALIDADE E DESEMPENHO DO SOFTWARE.
 
 6. Limitação de responsabilidade e indenidade
-6.1. EM NENHUMA HIPÓTESE A TOP HAWKS, SEUS AUTORES OU CONTRIBUINTES SERÃO
+6.1. EM NENHUMA HIPÓTESE A LICENCIANTE, SEUS AUTORES OU CONTRIBUINTES SERÃO
 RESPONSÁVEIS POR QUALQUER RECLAMAÇÃO, DANO OU OUTRA RESPONSABILIDADE DECORRENTE
 DO USO DO SOFTWARE POR PARTE DO MEMBRO OU DE TERCEIROS.
-6.2. Indenidade: O membro concorda em indenizar e manter a TOP HAWKS e Ronnald
+6.2. Indenidade: O membro concorda em indenizar e manter a Licenciante e Ronnald
 Hawk indenes de quaisquer perdas, danos, reclamações ou despesas (incluindo
 honorários advocatícios) decorrentes de ações judiciais movidas por usuários
 finais ou terceiros em relação às soluções desenvolvidas pelo membro com base no
