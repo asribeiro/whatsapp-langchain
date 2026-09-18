@@ -16,6 +16,7 @@ from fastapi import APIRouter, Depends, Query
 from whatsapp_langchain.agents.loader import list_agents
 from whatsapp_langchain.server.dependencies import verify_service_token
 from whatsapp_langchain.shared.db import get_pool
+from whatsapp_langchain.shared.opt_out import list_whatsapp_opt_outs
 
 logger = structlog.get_logger()
 
@@ -34,6 +35,13 @@ async def get_agents() -> dict[str, list[str]]:
         Lista de agent_ids registrados.
     """
     return {"agents": list_agents()}
+
+
+@router.get("/whatsapp/suppressions")
+async def get_whatsapp_suppressions() -> dict:
+    """Expõe um snapshot protegido dos opt-outs para o pipeline de audiência."""
+    pool = await get_pool()
+    return await list_whatsapp_opt_outs(pool)
 
 
 @router.get("/chats")

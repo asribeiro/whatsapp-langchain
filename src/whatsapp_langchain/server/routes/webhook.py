@@ -10,6 +10,8 @@ Uso:
          -d "MessageSid=SM123&From=whatsapp:+5511..."
 """
 
+from typing import Literal
+
 import structlog
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Response
 
@@ -20,6 +22,10 @@ from whatsapp_langchain.server.dependencies import (
 )
 from whatsapp_langchain.shared.config import settings
 from whatsapp_langchain.shared.db import get_pool
+from whatsapp_langchain.shared.opt_out import (
+    is_opt_out_command,
+    record_whatsapp_opt_out,
+)
 from whatsapp_langchain.shared.queue import enqueue_or_buffer
 
 logger = structlog.get_logger()
@@ -28,12 +34,24 @@ router = APIRouter(tags=["webhook"])
 
 # TwiML vazio — indica ao Twilio que recebemos a mensagem
 EMPTY_TWIML = '<?xml version="1.0" encoding="UTF-8"?><Response></Response>'
+OPT_OUT_TWIML = (
+    '<?xml version="1.0" encoding="UTF-8"?>'
+    "<Response><Message>Seu contato foi removido das nossas comunicações. "
+    "Você não receberá novas mensagens promocionais.</Message></Response>"
+)
 
 
 @router.post("/webhook/twilio")
 async def webhook_twilio(
     agent: str = Query(
         description="ID do agente para processar a mensagem",
+    ),
+    mode: Literal["agent", "campaign"] = Query(
+        default="agent",
+        description=(
+            "Modo de entrada: agent encaminha ao agente; campaign processa "
+            "apenas opt-out e ignora silenciosamente as demais respostas."
+        ),
     ),
     message_sid: str = Form(
         default="",
@@ -89,11 +107,6 @@ async def webhook_twilio(
     Returns:
         TwiML vazio com status 200.
     """
-    # Verifica se o agente existe
-    available_agents = list_agents()
-    if agent not in available_agents:
-        raise AgentNotFoundError(agent)
-
     # Sanitização de campos do Twilio recebidos via x-www-form-urlencoded.
     # From vem como "whatsapp:+55...", WaId vem como "5511..." sem + (fallback).
     phone_number = (from_number or "").replace("whatsapp:", "")
@@ -116,6 +129,30 @@ async def webhook_twilio(
             status_code=400,
             detail="Missing sender identity (From/WaId)",
         )
+
+    # Opt-out deve ser aceito antes de rate limit, debounce e agente. A resposta
+    # é estática e abre apenas a confirmação solicitada pelo próprio usuário.
+    if is_opt_out_command(body):
+        pool = await get_pool()
+        await record_whatsapp_opt_out(pool, phone_number, message_sid)
+        logger.info("whatsapp_opt_out_recorded", message_id=message_sid)
+        return Response(content=OPT_OUT_TWIML, media_type="application/xml")
+
+    # Números usados em campanhas não funcionam como canal conversacional.
+    # O opt-out acima continua operacional, mas nenhuma outra resposta pode
+    # alcançar rate limit, fila, worker ou agente.
+    if mode == "campaign":
+        logger.info(
+            "whatsapp_campaign_reply_ignored",
+            phone=phone_number,
+            message_id=message_sid,
+        )
+        return Response(content=EMPTY_TWIML, media_type="application/xml")
+
+    # O agente só é relevante no modo conversacional.
+    available_agents = list_agents()
+    if agent not in available_agents:
+        raise AgentNotFoundError(agent)
 
     # Mídia (imagem, áudio)
     try:

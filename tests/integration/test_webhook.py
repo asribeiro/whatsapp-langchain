@@ -131,6 +131,72 @@ class TestWebhookTwilio:
         assert response.status_code == 200
         assert "Response" in response.text
 
+    @patch("whatsapp_langchain.server.routes.webhook.enqueue_or_buffer")
+    @patch("whatsapp_langchain.server.routes.webhook.record_whatsapp_opt_out")
+    def test_twilio_intercepts_opt_out_before_agent(self, mock_record, mock_enqueue):
+        """SAIR deve persistir supressão e nunca entrar na fila do agente."""
+        response = client.post(
+            "/webhook/twilio?agent=rhawk_assistant",
+            data={
+                "MessageSid": "SM123",
+                "From": "whatsapp:+5511999999999",
+                "To": "whatsapp:+55118596",
+                "Body": "sair",
+                "NumMedia": "0",
+            },
+        )
+        assert response.status_code == 200
+        assert "removido" in response.text
+        mock_record.assert_awaited_once()
+        mock_enqueue.assert_not_called()
+
+    @patch("whatsapp_langchain.server.routes.webhook.check_rate_limit")
+    @patch("whatsapp_langchain.server.routes.webhook.enqueue_or_buffer")
+    @patch("whatsapp_langchain.server.routes.webhook.record_whatsapp_opt_out")
+    def test_campaign_mode_ignores_non_opt_out_before_agent(
+        self,
+        mock_record,
+        mock_enqueue,
+        mock_rate_limit,
+    ):
+        """Campanha deve aceitar a resposta sem acionar a conversa."""
+        response = client.post(
+            "/webhook/twilio?agent=rhawk_assistant&mode=campaign",
+            data={
+                "MessageSid": "SM123",
+                "From": "whatsapp:+5511999999999",
+                "To": "whatsapp:+55118596",
+                "Body": "Quero saber mais",
+                "NumMedia": "0",
+            },
+        )
+        assert response.status_code == 200
+        assert response.text == (
+            '<?xml version="1.0" encoding="UTF-8"?><Response></Response>'
+        )
+        mock_record.assert_not_called()
+        mock_rate_limit.assert_not_called()
+        mock_enqueue.assert_not_called()
+
+    @patch("whatsapp_langchain.server.routes.webhook.enqueue_or_buffer")
+    @patch("whatsapp_langchain.server.routes.webhook.record_whatsapp_opt_out")
+    def test_campaign_mode_still_records_opt_out(self, mock_record, mock_enqueue):
+        """SAIR continua sendo processado antes do bloqueio de conversa."""
+        response = client.post(
+            "/webhook/twilio?agent=rhawk_assistant&mode=campaign",
+            data={
+                "MessageSid": "SM124",
+                "From": "whatsapp:+5511999999999",
+                "To": "whatsapp:+55118596",
+                "Body": "SAIR",
+                "NumMedia": "0",
+            },
+        )
+        assert response.status_code == 200
+        assert "removido" in response.text
+        mock_record.assert_awaited_once()
+        mock_enqueue.assert_not_called()
+
     def test_twilio_openapi_exposes_form_fields(self):
         """Swagger deve exibir body form-encoded para teste manual."""
         openapi = client.get("/openapi.json").json()
@@ -170,3 +236,19 @@ class TestAdminRoutes:
         """Deve rejeitar requisição sem token de serviço."""
         response = client.get("/api/agents")
         assert response.status_code == 401
+
+    @patch("whatsapp_langchain.server.routes.admin.list_whatsapp_opt_outs")
+    def test_whatsapp_suppressions_are_protected(self, mock_list):
+        """Expõe o snapshot somente com autenticação administrativa."""
+        mock_list.return_value = {
+            "observedAt": "2026-09-18T20:00:00.000Z",
+            "phones": ["+5511999990000"],
+        }
+        unauthorized = client.get("/api/whatsapp/suppressions")
+        authorized = client.get(
+            "/api/whatsapp/suppressions",
+            headers=self.auth_headers,
+        )
+        assert unauthorized.status_code == 401
+        assert authorized.status_code == 200
+        assert authorized.json()["phones"] == ["+5511999990000"]
